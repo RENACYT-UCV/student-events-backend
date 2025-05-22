@@ -21,6 +21,6 @@ export class Event extends AuditBaseEntity {
   eventDetails: Relation<EventDetail[]>
 
   @ManyToOne(() => EventType, eventType => eventType.events)
-  @JoinColumn({ name: 'id' })
+  @JoinColumn({ name: 'event_type_id' })
   eventType: Relation<EventType>
 }

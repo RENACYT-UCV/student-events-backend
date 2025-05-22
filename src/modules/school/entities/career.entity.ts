@@ -10,7 +10,7 @@ export class Career extends AuditBaseEntity {
   @Column({ length: 50 })
   name: string
 
-  @ManyToOne(() => School, school => school.id)
-  @JoinColumn()
-  school: Relation<Event>
+  @ManyToOne(() => School, school => school.careers)
+  @JoinColumn({ name: 'school_id' })
+  school: Relation<School>
 }

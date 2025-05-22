@@ -9,6 +9,7 @@ import {
 } from 'typeorm'
 import { AuditBaseEntity } from '@modules/common'
 import { School } from '@modules/school'
+import { UserDetail } from './user-detail.entity'
 
 @Entity()
 export class User extends AuditBaseEntity {
@@ -46,8 +47,12 @@ export class User extends AuditBaseEntity {
   studentCode: number
 
   @ManyToOne(() => School, school => school.id)
-  @JoinColumn()
+  @JoinColumn({ name: 'id' })
   school: Relation<School>
+
+  @OneToOne(() => UserDetail, userDetail => userDetail.user)
+  @JoinColumn({ name: 'id' })
+  userDetail: Relation<UserDetail>
 
   //Relación para History
   /*
@@ -56,3 +61,5 @@ export class User extends AuditBaseEntity {
   history:History
   */
 }
+
+//Solo esta relacionado escuela y registro

@@ -10,6 +10,6 @@ export class School extends AuditBaseEntity {
   @Column({ length: 50 })
   name: string
 
-  @OneToMany(() => Career, career => career.id)
+  @OneToMany(() => Career, career => career.school)
   careers: Relation<Career[]>
 }

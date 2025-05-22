@@ -32,6 +32,6 @@ export class EventDetail extends AuditBaseEntity {
   url: string
 
   @ManyToOne(() => Event, event => event.eventDetails)
-  @JoinColumn({ name: 'id' })
+  @JoinColumn({ name: 'event_id' })
   event: Relation<Event>
 }
