@@ -3,7 +3,7 @@ import { Event } from './event.entity'
 
 @Entity()
 export class EventDetail {
-  @PrimaryGeneratedColumn('increment', { name: 'event_detail_id' })
+  @PrimaryGeneratedColumn('increment')
   id: number
 
   @ManyToOne(() => Event, event => event.eventDetails)
