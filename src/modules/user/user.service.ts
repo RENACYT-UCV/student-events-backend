@@ -6,6 +6,14 @@ import { CreateUserDto } from './dto/create-user.dto'
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
+  findAll() {
+    return this.userRepository.findAll()
+  }
+
+  findOneByEmail(email: string) {
+    return this.userRepository.findOneByEmail(email)
+  }
+
   /**
    * This method is only used for testing pipes.
    * In the final implementation, user registration will be handled
