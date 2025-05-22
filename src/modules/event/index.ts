@@ -1,0 +1,7 @@
+export * from './entities/event.entity'
+export * from './entities/event-detail.entity'
+export * from './entities/event-type.entity'
+export * from './dto/create-event.dto'
+export * from './dto/create-event-detail.dto'
+export * from './dto/create-event-type.dto'
+export * from './event.module'
