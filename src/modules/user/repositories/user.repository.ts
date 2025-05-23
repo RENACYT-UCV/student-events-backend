@@ -15,6 +15,10 @@ export class UserRepository {
     return this.userRepository.find()
   }
 
+  findOneByEmail(email: string) {
+    return this.userRepository.findOne({ where: { email } })
+  }
+
   /**
    * This method is only used for testing pipes.
    * In the final implementation, user registration will be handled
