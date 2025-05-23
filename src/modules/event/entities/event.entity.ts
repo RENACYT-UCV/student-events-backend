@@ -1,8 +1,17 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, Relation, OneToMany } from 'typeorm'
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  Relation,
+  OneToMany,
+} from 'typeorm'
 import { AuditBaseEntity } from '@modules/common'
 import { EventDetail } from './event-detail.entity'
 import { EventType } from './event-type.entity'
-  
+import { Status } from '../types/enums'
+
 @Entity('event')
 export class Event extends AuditBaseEntity {
   @PrimaryGeneratedColumn('increment')
@@ -14,7 +23,11 @@ export class Event extends AuditBaseEntity {
   @Column({ name: 'ability_amount', type: 'int', default: 0 })
   abilityAmount: number
 
-  @Column({ length: 20, default: 'active' })
+  @Column({
+    type: 'enum',
+    enum: Status,
+    default: Status.Pending,
+  })
   status: string
 
   @OneToMany(() => EventDetail, eventDetail => eventDetail.event, { cascade: true })

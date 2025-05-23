@@ -6,10 +6,13 @@ import {
   Relation,
   JoinColumn,
   OneToOne,
+  OneToMany,
 } from 'typeorm'
 import { AuditBaseEntity } from '@modules/common'
 import { School } from '@modules/school'
+import { History } from '@modules/history'
 import { UserDetail } from './user-detail.entity'
+import { Roles } from '../types/enums'
 
 @Entity()
 export class User extends AuditBaseEntity {
@@ -28,11 +31,12 @@ export class User extends AuditBaseEntity {
   @Column({ default: true })
   isActive: boolean
 
-  //Decidir bien
-  /*
-  @Column({ length:  })
-  role: string
-  */
+  @Column({
+    type: 'enum',
+    enum: Roles,
+    default: Roles.User,
+  })
+  role: Roles
 
   @Column({ length: 100, nullable: true })
   name: string
@@ -43,7 +47,7 @@ export class User extends AuditBaseEntity {
   @Column({ nullable: true })
   phoneNumber: number
 
-  @Column({})
+  @Column()
   studentCode: number
 
   @ManyToOne(() => School, school => school.id)
@@ -54,12 +58,6 @@ export class User extends AuditBaseEntity {
   @JoinColumn({ name: 'user_detail_id' })
   userDetail: Relation<UserDetail>
 
-  //Relación para History
-  /*
-  @OneToOne(()=> History)
-  @JoinColumn()
-  history:History
-  */
+  @OneToMany(() => History, history => history.user)
+  histories: Relation<History[]>
 }
-
-//Solo esta relacionado escuela y registro

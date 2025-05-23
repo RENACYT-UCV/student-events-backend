@@ -8,7 +8,7 @@ export class History extends AuditBaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, user => user.histories)
   @JoinColumn({ name: 'user_id' })
   user: Relation<User>
 

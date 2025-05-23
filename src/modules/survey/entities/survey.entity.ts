@@ -1,4 +1,12 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, Relation } from 'typeorm'
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Relation,
+} from 'typeorm'
 import { AuditBaseEntity } from '@modules/common'
 import { Assistance } from '@modules/attendance/entities/assistance.entity'
 import { Event } from '@modules/event/entities/event.entity'
@@ -26,8 +34,8 @@ export class Survey extends AuditBaseEntity {
   @Column({ type: 'text', nullable: true })
   description: string
 
-  @Column({ length: 20, default: 'active' })
-  status: string
+  @Column({ default: true })
+  status: boolean
 
   @Column({ default: true })
   isActive: boolean

@@ -1,4 +1,12 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, Relation } from 'typeorm'
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Relation,
+} from 'typeorm'
 import { AuditBaseEntity } from '@modules/common'
 import { Registration } from '@modules/event/entities/registration.entity'
 import { Survey } from '@modules/survey/entities/survey.entity'
@@ -13,8 +21,8 @@ export class Assistance extends AuditBaseEntity {
   @JoinColumn({ name: 'registration_id' })
   registration: Relation<Registration>
 
-  @Column({ length: 20, default: 'pending' })
-  status: string
+  @Column({ nullable: false, default: false })
+  status: boolean
 
   @OneToMany(() => Survey, survey => survey.assistance)
   surveys: Relation<Survey[]>

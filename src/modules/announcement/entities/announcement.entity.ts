@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Relation } from 'typeorm'
 import { AuditBaseEntity } from '@modules/common'
-import { User } from '@modules/user/entities/user.entity'
-import { EventDetail } from '@modules/event/entities/event-detail.entity'
+import { User } from '@modules/user'
+import { EventDetail } from '@modules/event'
 import { School } from '@modules/school'
 
 @Entity('announcement')
@@ -29,9 +29,6 @@ export class Announcement extends AuditBaseEntity {
 
   @Column({ type: 'date', nullable: false })
   date: Date
-
-  @Column({ length: 20, default: 'active' })
-  status: string
 
   @Column({ length: 50, nullable: false })
   type: string
