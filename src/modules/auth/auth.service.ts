@@ -1,12 +1,20 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
+import { BadRequestException, Inject, Injectable } from '@nestjs/common'
+import { ConfigType } from '@nestjs/config'
+import { JwtService } from '@nestjs/jwt'
 import bcrypt from 'bcrypt'
 import { UserService } from '@modules/user'
 import { RegisterDto } from './dto/register.dto'
 import { LoginDto } from './dto/login.dto'
+import { refreshJwtConfig } from './config/refresh-jwt.config'
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly jwtService: JwtService,
+    @Inject(refreshJwtConfig.KEY)
+    private readonly refreshTokenConfig: ConfigType<typeof refreshJwtConfig>,
+  ) {}
 
   /**
    * This method might not be necessary in the implementation
@@ -39,10 +47,28 @@ export class AuthService {
       throw new BadRequestException('Invalid Credentials')
     }
 
-    // Google account validation and verification will be added here
+    const payload = { userId: user.id }
+
+    const token = await this.jwtService.signAsync(payload)
 
     return {
       userId: user.id,
+      token,
+    }
+  }
+
+  private async generateTokens(userId: number) {
+    const payload = { userId }
+
+    const [accessToken, refreshToken] = await Promise.all([
+      this.jwtService.signAsync(payload),
+      this.jwtService.signAsync(payload, this.refreshTokenConfig),
+    ])
+
+    return {
+      userId,
+      accessToken,
+      refreshToken,
     }
   }
 }
