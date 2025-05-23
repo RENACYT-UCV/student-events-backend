@@ -42,4 +42,50 @@ export class PdfController {
     });
     res.end(buffer);
   }
+
+  @Get('usuario-eventos')
+  async getUsuarioEventosPdf(@Res() res: Response, @Query('userId') userId: number) {
+    // Consulta compuesta usando TypeORM
+    const registros = await this.reportRepository.manager.getRepository('Registration').find({
+      where: { user: { id: userId } },
+      relations: [
+        'user',
+        'event',
+        'event.eventDetails',
+        'assistances',
+      ],
+      order: {
+        event: {
+          eventDetails: {
+            startDate: 'DESC',
+            startTime: 'DESC',
+          },
+        },
+      },
+    });
+
+    // Aplanar los datos para la tabla
+    const rows: any[][] = [];
+    for (const reg of registros) {
+      const user = reg.user;
+      const event = reg.event;
+      const eventDetail = event.eventDetails && event.eventDetails[0];
+      const asistencia = reg.assistances && reg.assistances[0];
+      rows.push([
+        user.id,
+        `${user.name} ${user.lastName}`,
+        eventDetail ? `${eventDetail.startDate.toLocaleDateString('es-PE')} a las ${eventDetail.startTime}` : '',
+        event.name,
+        event.status,
+        asistencia ? asistencia.status : '',
+      ]);
+    }
+
+    const buffer = await this.pdfService.generateUsuarioEventosPdf(rows);
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': 'attachment; filename="usuario_eventos.pdf"',
+    });
+    res.end(buffer);
+  }
 }

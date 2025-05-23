@@ -37,4 +37,34 @@ export class PdfService {
     };
     return this.generatePdf(docDefinition);
   }
+
+  async generateUsuarioEventosPdf(rows: any[][]): Promise<Buffer> {
+    const docDefinition = {
+      content: [
+        { text: 'Listado de Eventos y Asistencias del Usuario', style: 'header' },
+        {
+          table: {
+            headerRows: 1,
+            widths: ['auto', '*', '*', '*', '*', '*'],
+            body: [
+              [
+                'ID Usuario',
+                'Nombre',
+                'Fecha y hora',
+                'Nombre del evento',
+                'Estado',
+                'Asistencia',
+              ],
+              ...rows
+            ]
+          }
+        }
+      ],
+      styles: {
+        header: { fontSize: 18, bold: true, margin: [0, 0, 0, 10] },
+      },
+      pageOrientation: 'landscape',
+    };
+    return this.generatePdf(docDefinition);
+  }
 }
