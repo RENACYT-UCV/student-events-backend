@@ -47,11 +47,11 @@ export class User extends AuditBaseEntity {
   studentCode: number
 
   @ManyToOne(() => School, school => school.id)
-  @JoinColumn({ name: 'id' })
+  @JoinColumn({ name: 'school_id' })
   school: Relation<School>
 
   @OneToOne(() => UserDetail, userDetail => userDetail.user)
-  @JoinColumn({ name: 'id' })
+  @JoinColumn({ name: 'user_detail_id' })
   userDetail: Relation<UserDetail>
 
   //Relación para History
