@@ -6,8 +6,18 @@ import { AuthModule } from '@modules/auth/auth.module'
 import { UserModule } from '@modules/user/user.module'
 import { EventModule } from '@modules/event/event.module'
 import { SurveyModule } from '@modules/survey/survey.module'
+import { PdfModule } from '@modules/common/pdf.module'
 
 @Module({
-  imports: [envConfig(), typeOrmModule(), AuthModule, UserModule, EventModule, SurveyModule],
+  imports: [
+    envConfig(),
+    typeOrmModule(),
+    AuthModule,
+    UserModule,
+    EventModule,
+    SurveyModule,
+    SurveyModule,
+    PdfModule,
+  ],
 })
 export class AppModule {}
