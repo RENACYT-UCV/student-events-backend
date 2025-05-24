@@ -62,15 +62,16 @@ export class AuthService {
       throw new BadRequestException('No existe una cuenta con ese correo')
     }
 
-    const token = crypto.randomBytes(32).toString('hex')
+    // Generar un código numérico de 6 dígitos
+    const code = Math.floor(100000 + Math.random() * 900000).toString()
     const expires = new Date(Date.now() + 15 * 60 * 1000) // 15 minutos
 
     await this.userService.updateUser(user.id, {
-      resetToken: token,
+      resetToken: code,
       resetTokenExpires: expires,
     })
 
-    await this.mailService.sendPasswordReset(email, token)
+    await this.mailService.sendPasswordReset(email, user.username, code)
 
     return {
       message: 'Se ha enviado un correo con instrucciones para recuperar tu contraseña',
