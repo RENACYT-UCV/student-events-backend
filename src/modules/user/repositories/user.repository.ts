@@ -23,6 +23,49 @@ export class UserRepository {
   findOneByEmail(email: string) {
     return this.userRepository.findOne({ where: { email } })
   }
+
+  /**
+   * This method is only used for testing pipes.
+   * In the final implementation, user registration will be handled
+   * through authentication.
+   * This method will be removed.
+   */
+
+  async findUserById(id: number) {
+    return this.userRepository.findOne({
+      where: { id },
+      select: [
+        'id',
+        'name',
+        'lastName',
+        'email'
+      ]
+    });
+  }
+
+  async findUserEventHistory(id: number) {
+    return this.userRepository.manager.getRepository('Registration').find({
+      where: {
+        user: { id: id }
+      },
+      relations: [
+        'event',
+        'event.eventDetails',
+        'assistances'
+      ],
+      order: {
+        event: {
+          eventDetails: {
+            startDate: 'DESC'
+          }
+        }
+      }
+    });
+  }
+
+
+
+
   createUser(data: CreateUserDto) {
     const user = this.userRepository.create(data)
     return this.userRepository.save(user)

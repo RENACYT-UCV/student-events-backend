@@ -1,4 +1,6 @@
-import { Body, Controller, Get, Post, Param, Put, Delete } from '@nestjs/common'
+
+import { Body, Controller, Get, Post, Param, ParseIntPipe, NotFoundException, Put, Delete } from '@nestjs/common'
+
 import { UserService } from './user.service'
 import { CreateUserDto } from './dto/create-user.dto'
 
@@ -15,6 +17,26 @@ export class UserController {
   async getUserById(@Param('id') id: number) {
     return await this.userService.findOneById(id)
   }
+
+
+  /**
+   * This method is only used for testing pipes.
+   * In the final implementation, user registration will be handled
+   * through authentication.
+   * This method will be removed.
+   */
+
+
+  @Get('profile/:id')
+  async getUserProfile(@Param('id', ParseIntPipe) userId: number) {
+    return await this.userService.getUserProfile(userId);
+  }
+
+  @Get(':id/event-history')
+  getUserEventHistory(@Param('id', ParseIntPipe) id: number) {
+    return this.userService.getUserEventHistory(id);
+  }
+
 
   @Post()
   async createUser(@Body() data: CreateUserDto) {
