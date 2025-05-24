@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
+// import { UserRepository } from '@modules/user'
 import { AnnouncementService } from './announcement.service'
 import { AnnouncementController } from './announcement.controller'
 import { Announcement } from './entities/announcement.entity'

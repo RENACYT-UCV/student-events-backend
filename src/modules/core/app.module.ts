@@ -11,6 +11,7 @@ import { AnnouncementModule } from '@modules/announcement/announcement.module'
 import { AssistanceModule } from '@modules/attendance/assistance.module'
 import { SchoolModule } from '@modules/school/school.module'
 import { CertificateModule } from '@modules/certificate/certificate.module'
+
 @Module({
   imports: [
     envConfig(),
@@ -24,6 +25,7 @@ import { CertificateModule } from '@modules/certificate/certificate.module'
     AnnouncementModule,
     AssistanceModule,
     SchoolModule,
+    SurveyModule,
     CertificateModule,
   ],
 })
