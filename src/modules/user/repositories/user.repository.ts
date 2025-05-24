@@ -15,10 +15,6 @@ export class UserRepository {
     return this.userRepository.find()
   }
 
-  findOneByEmail(email: string) {
-    return this.userRepository.findOne({ where: { email } })
-  }
-
   /**
    * This method is only used for testing pipes.
    * In the final implementation, user registration will be handled
@@ -28,5 +24,17 @@ export class UserRepository {
   createUser(data: CreateUserDto) {
     const user = this.userRepository.create(data)
     return this.userRepository.save(user)
+  }
+
+  async findUserById(id: number) {
+    return this.userRepository.findOne({
+      where: { id },
+      select: [
+        'id',
+        'name',
+        'lastName',
+        'email'
+      ]
+    });
   }
 }

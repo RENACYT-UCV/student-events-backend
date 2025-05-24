@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common'
+import { Body, Controller, Get, Post, Param, ParseIntPipe, NotFoundException } from '@nestjs/common'
 import { UserService } from './user.service'
 import { CreateUserDto } from './dto/create-user.dto'
 
@@ -9,6 +9,11 @@ export class UserController {
   @Get()
   async getAllUser() {
     // return await this.userService.
+  }
+
+  @Get('profile/:id')
+  async getUserProfile(@Param('id', ParseIntPipe) userId: number) {
+    return await this.userService.getUserProfile(userId);
   }
 
   /**
