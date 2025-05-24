@@ -34,37 +34,25 @@ export class UserRepository {
   async findUserById(id: number) {
     return this.userRepository.findOne({
       where: { id },
-      select: [
-        'id',
-        'name',
-        'lastName',
-        'email'
-      ]
-    });
+      select: ['id', 'name', 'lastName', 'email'],
+    })
   }
 
   async findUserEventHistory(id: number) {
     return this.userRepository.manager.getRepository('Registration').find({
       where: {
-        user: { id: id }
+        user: { id: id },
       },
-      relations: [
-        'event',
-        'event.eventDetails',
-        'assistances'
-      ],
+      relations: ['event', 'event.eventDetails', 'assistances'],
       order: {
         event: {
           eventDetails: {
-            startDate: 'DESC'
-          }
-        }
-      }
-    });
+            startDate: 'DESC',
+          },
+        },
+      },
+    })
   }
-
-
-
 
   createUser(data: CreateUserDto) {
     const user = this.userRepository.create(data)

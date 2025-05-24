@@ -9,7 +9,7 @@ import { SurveyModule } from '@modules/survey/survey.module'
 import { PdfModule } from '@modules/pdf/pdf.module'
 import { AnnouncementModule } from '@modules/announcement/announcement.module'
 import { AssistanceModule } from '@modules/attendance/assistance.module'
-
+import { SchoolModule } from '@modules/school/school.module'
 @Module({
   imports: [
     envConfig(),
@@ -22,6 +22,7 @@ import { AssistanceModule } from '@modules/attendance/assistance.module'
     PdfModule,
     AnnouncementModule,
     AssistanceModule,
+    SchoolModule,
   ],
 })
 export class AppModule {}
