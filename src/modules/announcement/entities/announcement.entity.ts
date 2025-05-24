@@ -9,7 +9,7 @@ export class Announcement extends AuditBaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number
 
-  @ManyToOne(() => User)
+  @ManyToOne('User')
   @JoinColumn({ name: 'user_id' })
   user: Relation<User>
 

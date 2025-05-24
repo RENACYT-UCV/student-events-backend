@@ -16,13 +16,13 @@ export class Question extends AuditBaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number
 
-  @ManyToOne(() => Survey)
-  @JoinColumn({ name: 'survey_id' })
-  survey: Relation<Survey>
-
   @Column({ type: 'text', nullable: false })
   text: string
 
-  @OneToMany(() => Option, option => option.question)
+  @ManyToOne(() => Survey, survey => survey.questions)
+  @JoinColumn({ name: 'survey_id' })
+  survey: Relation<Survey>
+
+  @OneToMany(() => Option, option => option.question, { cascade: ['insert', 'recover'] })
   options: Relation<Option[]>
 }

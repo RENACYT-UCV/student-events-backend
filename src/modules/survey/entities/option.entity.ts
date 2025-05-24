@@ -9,20 +9,20 @@ import {
 } from 'typeorm'
 import { AuditBaseEntity } from '@modules/common'
 import { Question } from './question.entity'
-import { Response } from './response.entity'
+import { Answer } from './answer.entity'
 
 @Entity('option')
 export class Option extends AuditBaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number
 
-  @ManyToOne(() => Question)
+  @ManyToOne(() => Question, question => question.options)
   @JoinColumn({ name: 'question_id' })
   question: Relation<Question>
 
   @Column({ type: 'text', nullable: false })
   text: string
 
-  @OneToMany(() => Response, response => response.option)
-  responses: Relation<Response[]>
+  @OneToMany(() => Answer, answer => answer.option, { cascade: ['insert', 'recover'] })
+  answers: Relation<Answer[]>
 }

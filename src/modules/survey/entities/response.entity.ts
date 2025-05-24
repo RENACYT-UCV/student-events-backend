@@ -1,23 +1,34 @@
-import { Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Relation } from 'typeorm'
-import { AuditBaseEntity } from '@modules/common'
-import { Question } from './question.entity'
-import { User } from '@modules/user/entities/user.entity'
-import { Option } from './option.entity'
+import {
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Relation,
+} from 'typeorm'
+import { User } from '@modules/user'
+import { Survey } from './survey.entity'
+import { Answer } from './answer.entity'
 
-@Entity('response')
-export class Response extends AuditBaseEntity {
+@Entity()
+export class Response {
   @PrimaryGeneratedColumn('increment')
   id: number
 
-  @ManyToOne(() => Question)
-  @JoinColumn({ name: 'question_id' })
-  question: Relation<Question>
-
-  @ManyToOne(() => User)
+  @ManyToOne('User')
   @JoinColumn({ name: 'user_id' })
   user: Relation<User>
 
-  @ManyToOne(() => Option)
-  @JoinColumn({ name: 'option_id' })
-  option: Relation<Option>
+  @ManyToOne('Survey')
+  @JoinColumn({ name: 'survey_id' })
+  survey: Relation<Survey>
+
+  @CreateDateColumn()
+  submittedAt: Date
+
+  @OneToMany(() => Answer, answer => answer.response, {
+    cascade: ['insert', 'recover'],
+  })
+  answers: Relation<Answer[]>
 }
