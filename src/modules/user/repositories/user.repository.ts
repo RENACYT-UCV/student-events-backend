@@ -37,4 +37,8 @@ export class UserRepository {
     await this.userRepository.delete(id)
     return { deleted: true }
   }
+
+  findBySchoolId(schoolId: number) {
+    return this.userRepository.find({ where: { school: { id: schoolId } } })
+  }
 }
