@@ -25,6 +25,40 @@ export class UserRepository {
    * through authentication.
    * This method will be removed.
    */
+
+  async findUserById(id: number) {
+    return this.userRepository.findOne({
+      where: { id },
+      select: [
+        'id',
+        'name',
+        'lastName',
+        'email'
+      ]
+    });
+  }
+
+  async findUserEventHistory(id: number) {
+    return this.userRepository.manager.getRepository('Registration').find({
+      where: {
+        user: { id: id }
+      },
+      relations: [
+        'event',
+        'event.eventDetails',
+        'assistances'
+      ],
+      order: {
+        event: {
+          eventDetails: {
+            startDate: 'DESC'
+          }
+        }
+      }
+    });
+  }
+
+
   createUser(data: CreateUserDto) {
     const user = this.userRepository.create(data)
     return this.userRepository.save(user)
