@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common'
+import { Body, Controller, Get, Post, Param, Put, Delete } from '@nestjs/common'
 import { UserService } from './user.service'
 import { CreateUserDto } from './dto/create-user.dto'
 
@@ -8,17 +8,26 @@ export class UserController {
 
   @Get()
   async getAllUser() {
-    // return await this.userService.
+    return await this.userService.findAll()
   }
 
-  /**
-   * This method is only used for testing pipes.
-   * In the final implementation, user registration will be handled
-   * through authentication.
-   * This method will be removed.
-   */
+  @Get(':id')
+  async getUserById(@Param('id') id: number) {
+    return await this.userService.findOneById(id)
+  }
+
   @Post()
   async createUser(@Body() data: CreateUserDto) {
     return await this.userService.createUser(data)
+  }
+
+  @Put(':id')
+  async updateUser(@Param('id') id: number, @Body() data) {
+    return await this.userService.updateUser(id, data)
+  }
+
+  @Delete(':id')
+  async deleteUser(@Param('id') id: number) {
+    return await this.userService.deleteUser(id)
   }
 }

@@ -11,21 +11,23 @@ export class UserService {
     return this.userRepository.findAll()
   }
 
+  findOneById(id: number) {
+    return this.userRepository.findOneById(id)
+  }
+
   findOneByEmail(email: string) {
     return this.userRepository.findOneByEmail(email)
   }
 
-  /**
-   * This method is only used for testing pipes.
-   * In the final implementation, user registration will be handled
-   * through authentication.
-   * This method will be removed.
-   */
   createUser(data: CreateUserDto) {
     return this.userRepository.createUser(data)
   }
 
   updateUser(id: number, data: UpdateUserDto) {
     return this.userRepository.updateUser(id, data)
+  }
+
+  deleteUser(id: number) {
+    return this.userRepository.deleteUser(id)
   }
 }

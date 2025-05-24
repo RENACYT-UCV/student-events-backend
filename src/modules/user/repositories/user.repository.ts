@@ -16,16 +16,13 @@ export class UserRepository {
     return this.userRepository.find()
   }
 
+  findOneById(id: number) {
+    return this.userRepository.findOne({ where: { id } })
+  }
+
   findOneByEmail(email: string) {
     return this.userRepository.findOne({ where: { email } })
   }
-
-  /**
-   * This method is only used for testing pipes.
-   * In the final implementation, user registration will be handled
-   * through authentication.
-   * This method will be removed.
-   */
   createUser(data: CreateUserDto) {
     const user = this.userRepository.create(data)
     return this.userRepository.save(user)
@@ -34,5 +31,10 @@ export class UserRepository {
   async updateUser(id: number, data: UpdateUserDto) {
     await this.userRepository.update(id, data)
     return this.userRepository.findOne({ where: { id } })
+  }
+
+  async deleteUser(id: number) {
+    await this.userRepository.delete(id)
+    return { deleted: true }
   }
 }
