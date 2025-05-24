@@ -11,6 +11,3 @@ export class Report extends AuditBaseEntity {
   @JoinColumn({ name: 'registration_id' })
   registration: Relation<Registration>
 }
-
-
-//Relacion reporte con registro

@@ -26,4 +26,3 @@ export class Question extends AuditBaseEntity {
   @OneToMany(() => Option, option => option.question)
   options: Relation<Option[]>
 }
-//Solo esta relacionado survey y opcion

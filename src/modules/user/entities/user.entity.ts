@@ -50,6 +50,12 @@ export class User extends AuditBaseEntity {
   @Column()
   studentCode: number
 
+  @Column({ length: 100, nullable: true })
+  resetToken: string
+
+  @Column({ type: 'timestamp', nullable: true })
+  resetTokenExpires: Date
+
   @ManyToOne(() => School, school => school.id)
   @JoinColumn({ name: 'school_id' })
   school: Relation<School>

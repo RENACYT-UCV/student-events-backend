@@ -1,19 +1,19 @@
-import pdfMake from "pdfmake/build/pdfmake";
-import pdfFonts from "pdfmake/build/vfs_fonts";
-import { Injectable } from "@nestjs/common";
-import { Report } from "@modules/report/entities/report.entity";
+import pdfMake from 'pdfmake/build/pdfmake'
+import pdfFonts from 'pdfmake/build/vfs_fonts'
+import { Injectable } from '@nestjs/common'
+import { Report } from '@modules/report/entities/report.entity'
 
-pdfMake.vfs = pdfFonts.pdfMake ? pdfFonts.pdfMake.vfs : pdfFonts.vfs;
+pdfMake.vfs = pdfFonts.pdfMake ? pdfFonts.pdfMake.vfs : pdfFonts.vfs
 
 @Injectable()
 export class PdfService {
   async generatePdf(docDefinition: any): Promise<Buffer> {
     return new Promise((resolve, reject) => {
-      const pdfDocGenerator = pdfMake.createPdf(docDefinition);
+      const pdfDocGenerator = pdfMake.createPdf(docDefinition)
       pdfDocGenerator.getBuffer((buffer: Buffer) => {
-        resolve(buffer);
-      });
-    });
+        resolve(buffer)
+      })
+    })
   }
 
   async generateInformePdf(informes: Report[]): Promise<Buffer> {
@@ -25,17 +25,17 @@ export class PdfService {
             headerRows: 1,
             widths: ['auto', '*'],
             body: [
-              [ 'ID', 'ID Registro' ],
-              ...informes.map(inf => [inf.id, inf.registration ? inf.registration.id : ''])
-            ]
-          }
-        }
+              ['ID', 'ID Registro'],
+              ...informes.map(inf => [inf.id, inf.registration ? inf.registration.id : '']),
+            ],
+          },
+        },
       ],
       styles: {
         header: { fontSize: 18, bold: true, margin: [0, 0, 0, 10] },
       },
-    };
-    return this.generatePdf(docDefinition);
+    }
+    return this.generatePdf(docDefinition)
   }
 
   async generateUsuarioEventosPdf(rows: any[][]): Promise<Buffer> {
@@ -47,24 +47,17 @@ export class PdfService {
             headerRows: 1,
             widths: ['auto', '*', '*', '*', '*', '*'],
             body: [
-              [
-                'ID Usuario',
-                'Nombre',
-                'Fecha y hora',
-                'Nombre del evento',
-                'Estado',
-                'Asistencia',
-              ],
-              ...rows
-            ]
-          }
-        }
+              ['ID Usuario', 'Nombre', 'Fecha y hora', 'Nombre del evento', 'Estado', 'Asistencia'],
+              ...rows,
+            ],
+          },
+        },
       ],
       styles: {
         header: { fontSize: 18, bold: true, margin: [0, 0, 0, 10] },
       },
       pageOrientation: 'landscape',
-    };
-    return this.generatePdf(docDefinition);
+    }
+    return this.generatePdf(docDefinition)
   }
 }

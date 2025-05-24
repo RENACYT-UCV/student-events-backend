@@ -17,14 +17,14 @@ export class EventRepository {
 
   findAll() {
     return this.eventRepository.find({
-      relations: ['eventDetail', 'eventType'],
+      relations: ['eventDetails', 'eventType'],
     })
   }
 
   findById(id: number) {
     return this.eventRepository.findOne({
       where: { id },
-      relations: ['eventDetail', 'eventType'],
+      relations: ['eventDetails', 'eventType'],
     })
   }
 

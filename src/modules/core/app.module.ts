@@ -6,7 +6,9 @@ import { AuthModule } from '@modules/auth/auth.module'
 import { UserModule } from '@modules/user/user.module'
 import { EventModule } from '@modules/event/event.module'
 import { SurveyModule } from '@modules/survey/survey.module'
-import { PdfModule } from '@modules/common/pdf.module'
+import { PdfModule } from '@modules/pdf/pdf.module'
+import { AnnouncementModule } from '@modules/announcement/announcement.module'
+import { AssistanceModule } from '@modules/attendance/assistance.module'
 
 @Module({
   imports: [
@@ -18,6 +20,8 @@ import { PdfModule } from '@modules/common/pdf.module'
     SurveyModule,
     SurveyModule,
     PdfModule,
+    AnnouncementModule,
+    AssistanceModule,
   ],
 })
 export class AppModule {}

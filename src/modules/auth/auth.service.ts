@@ -3,10 +3,16 @@ import bcrypt from 'bcrypt'
 import { UserService } from '@modules/user'
 import { RegisterDto } from './dto/register.dto'
 import { LoginDto } from './dto/login.dto'
+import crypto from 'crypto'
+import { UpdateUserDto } from '@modules/user/dto/update-user.dto'
+import { MailService } from '@modules/mail/mail.service'
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly mailService: MailService,
+  ) {}
 
   /**
    * This method might not be necessary in the implementation
@@ -43,6 +49,32 @@ export class AuthService {
 
     return {
       userId: user.id,
+    }
+  }
+
+  async updateUser(id: number, data: UpdateUserDto) {
+    return this.userService.updateUser(id, data)
+  }
+
+  async requestPasswordReset(email: string) {
+    const user = await this.userService.findOneByEmail(email)
+    if (!user) {
+      throw new BadRequestException('No existe una cuenta con ese correo')
+    }
+
+    // Generar un código numérico de 6 dígitos
+    const code = Math.floor(100000 + Math.random() * 900000).toString()
+    const expires = new Date(Date.now() + 15 * 60 * 1000) // 15 minutos
+
+    await this.userService.updateUser(user.id, {
+      resetToken: code,
+      resetTokenExpires: expires,
+    })
+
+    await this.mailService.sendPasswordReset(email, user.username, code)
+
+    return {
+      message: 'Se ha enviado un correo con instrucciones para recuperar tu contraseña',
     }
   }
 }
