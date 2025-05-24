@@ -10,6 +10,7 @@ import { PdfModule } from '@modules/pdf/pdf.module'
 import { AnnouncementModule } from '@modules/announcement/announcement.module'
 import { AssistanceModule } from '@modules/attendance/assistance.module'
 import { SchoolModule } from '@modules/school/school.module'
+import { CertificateModule } from '@modules/certificate/certificate.module'
 @Module({
   imports: [
     envConfig(),
@@ -23,6 +24,7 @@ import { SchoolModule } from '@modules/school/school.module'
     AnnouncementModule,
     AssistanceModule,
     SchoolModule,
+    CertificateModule,
   ],
 })
 export class AppModule {}
