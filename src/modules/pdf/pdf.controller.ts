@@ -4,6 +4,7 @@ import { PdfService } from './pdf.service'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { Report } from '@modules/report/entities/report.entity'
+import { historialPdfDesign } from './pdf-design'
 
 @Controller('pdf')
 export class PdfController {
@@ -12,36 +13,6 @@ export class PdfController {
     @InjectRepository(Report)
     private readonly reportRepository: Repository<Report>,
   ) {}
-
-  @Get('demo')
-  async getDemoPdf(@Res() res: Response, @Query('title') title: string) {
-    const docDefinition = {
-      content: [
-        { text: title || 'Demo PDF', style: 'header' },
-        { text: 'Este es un PDF generado con pdfmake y NestJS.' },
-      ],
-      styles: {
-        header: { fontSize: 18, bold: true, margin: [0, 0, 0, 10] },
-      },
-    }
-    const buffer = await this.pdfService.generatePdf(docDefinition)
-    res.set({
-      'Content-Type': 'application/pdf',
-      'Content-Disposition': 'attachment; filename="demo.pdf"',
-    })
-    res.end(buffer)
-  }
-
-  @Get('informes')
-  async getInformesPdf(@Res() res: Response) {
-    const informes = await this.reportRepository.find({ relations: ['registration'] })
-    const buffer = await this.pdfService.generateInformePdf(informes)
-    res.set({
-      'Content-Type': 'application/pdf',
-      'Content-Disposition': 'attachment; filename="informes.pdf"',
-    })
-    res.end(buffer)
-  }
 
   @Get('usuario-eventos')
   async getUsuarioEventosPdf(@Res() res: Response, @Query('userId') userId: number) {
@@ -61,24 +32,25 @@ export class PdfController {
 
     // Aplanar los datos para la tabla
     const rows: any[][] = []
+    let userName = ''
     for (const reg of registros) {
       const user = reg.user
       const event = reg.event
       const eventDetail = event.eventDetails && event.eventDetails[0]
       const asistencia = reg.assistances && reg.assistances[0]
+      if (!userName && user) userName = `${user.name}`
       rows.push([
-        user.id,
-        `${user.name} ${user.lastName}`,
         eventDetail
           ? `${eventDetail.startDate.toLocaleDateString('es-PE')} a las ${eventDetail.startTime}`
           : '',
         event.name,
         event.status,
-        asistencia ? asistencia.status : '',
+        asistencia ? asistencia.status : 'No asistió',
       ])
     }
-
-    const buffer = await this.pdfService.generateUsuarioEventosPdf(rows)
+    const date = new Date().toLocaleDateString('es-PE')
+    const docDefinition = historialPdfDesign({ userName, date, rows })
+    const buffer = await this.pdfService.generatePdf(docDefinition)
     res.set({
       'Content-Type': 'application/pdf',
       'Content-Disposition': 'attachment; filename="usuario_eventos.pdf"',
