@@ -22,7 +22,7 @@ export class AssistanceController {
     return this.assistanceService.findOne(Number(id))
   }
 
-  @Post('mark-attendance')
+  @Post('mark')
   registerUserAssistance(@Body() createAssistanceDto: CreateAssistanceDto) {
     return this.assistanceService.registerUserAssistance(createAssistanceDto)
   }
