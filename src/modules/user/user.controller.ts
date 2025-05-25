@@ -17,13 +17,6 @@ export class UserController {
     return await this.userService.findOneById(id)
   }
 
-  /**
-   * This method is only used for testing pipes.
-   * In the final implementation, user registration will be handled
-   * through authentication.
-   * This method will be removed.
-   */
-
   @Get('profile/:id')
   async getUserProfile(@Param('id', ParseIntPipe) userId: number) {
     return await this.userService.getUserProfile(userId)
