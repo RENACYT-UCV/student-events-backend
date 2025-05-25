@@ -41,7 +41,7 @@ export class User extends AuditBaseEntity {
   @Column({ length: 100, nullable: true })
   name: string
 
-  @Column({ length: 50 })
+  @Column({ length: 50, nullable: true })
   lastName: string
 
   @Column({ nullable: true })
