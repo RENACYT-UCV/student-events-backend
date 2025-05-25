@@ -1,0 +1,16 @@
+{
+  "id": 1,
+  "user": {
+    "id": 1
+  },
+  "eventDetail": {
+    "id": 1
+  },
+  "school": {
+    "id": 1
+  },
+  "title": "Sample Title",
+  "message": "Sample message content",
+  "date": "2023-01-01",
+  "type": "General"
+}

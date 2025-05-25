@@ -1,0 +1,11 @@
+{
+  "userId": 1,
+  "eventDetails": [
+    {
+      "eventId": 1,
+      "eventName": "Sample Event",
+      "eventDate": "2023-01-01",
+      "attendanceStatus": "Attended"
+    }
+  ]
+}

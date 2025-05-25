@@ -1,0 +1,16 @@
+{
+  "name": "Sample Event",
+  "abilityAmount": 100,
+  "status": "PENDING",
+  "eventTypeId": 1,
+  "eventDetail": {
+    "startDate": "2023-01-01",
+    "endDate": "2023-01-02",
+    "startTime": "09:00",
+    "endTime": "17:00",
+    "modality": "Online",
+    "description": "Sample event description",
+    "location": "Virtual",
+    "url": "http://example.com"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "createAssistance": {
+    "registrationId": 1,
+    "status": true
+  },
+  "updateAssistance": {
+    "registrationId": 1,
+    "status": false
+  }
+}

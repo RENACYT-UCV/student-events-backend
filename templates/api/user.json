@@ -1,7 +1,23 @@
 {
-  "username": "kfoq",
-  "lastName": "apellido",
-  "studentCode": "123",
-  "email": "frbrizoi@gmail.com",
-  "password": "123456"
+  "username": "exampleUser",
+  "email": "example@example.com",
+  "password": "securePassword",
+  "isActive": true,
+  "role": "USER",
+  "name": "John",
+  "lastName": "Doe",
+  "phoneNumber": 1234567890,
+  "studentCode": 123456,
+  "resetToken": "",
+  "resetTokenExpires": null,
+  "school": {
+    "id": 1
+  },
+  "userDetail": {
+    "name": "John",
+    "lastname": "Doe",
+    "phoneNumber": "1234567890",
+    "codeStudent": "123456",
+    "universityCareer": "Engineering"
+  }
 }
