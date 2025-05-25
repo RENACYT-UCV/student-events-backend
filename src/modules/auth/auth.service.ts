@@ -1,17 +1,23 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
+import { BadRequestException, Inject, Injectable, UnauthorizedException } from '@nestjs/common'
+import { ConfigType } from '@nestjs/config'
+import { JwtService } from '@nestjs/jwt'
 import bcrypt from 'bcrypt'
 import { UserService } from '@modules/user'
-import { RegisterDto } from './dto/register.dto'
-import { LoginDto } from './dto/login.dto'
-import crypto from 'crypto'
 import { UpdateUserDto } from '@modules/user/dto/update-user.dto'
 import { MailService } from '@modules/mail/mail.service'
+import { RegisterDto } from './dto/register.dto'
+import { LoginDto } from './dto/login.dto'
+
+import { refreshJwtConfig } from './config/refresh-jwt.config'
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly mailService: MailService,
+    private readonly jwtService: JwtService,
+    @Inject(refreshJwtConfig.KEY)
+    private refreshTokenConfig: ConfigType<typeof refreshJwtConfig>,
   ) {}
 
   /**
@@ -37,18 +43,30 @@ export class AuthService {
     }
   }
 
-  async login(data: LoginDto) {
-    const { email, password } = data
+  // async login(data: LoginDto) {
+  //   const { email } = data
 
-    const user = await this.userService.findOneByEmail(email)
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-      throw new BadRequestException('Invalid Credentials')
-    }
+  //   const user = await this.userService.findOneByEmail(email)
+  //   if (!user) {
+  //     throw new BadRequestException('Invalid Credentials')
+  //   }
 
-    // Google account validation and verification will be added here
+  //   const { accessToken, refreshToken } = await this.generateTokens(user.id)
+
+  //   return {
+  //     userId: user.id,
+  //     accessToken,
+  //     refreshToken,
+  //   }
+  // }
+
+  async login(userId: number) {
+    const { accessToken, refreshToken } = await this.generateTokens(userId)
 
     return {
-      userId: user.id,
+      userId,
+      accessToken,
+      refreshToken,
     }
   }
 
@@ -76,5 +94,39 @@ export class AuthService {
     return {
       message: 'Se ha enviado un correo con instrucciones para recuperar tu contraseña',
     }
+  }
+
+  async generateTokens(userId: number) {
+    const payload: { userId: number } = { userId }
+    const [accessToken, refreshToken] = await Promise.all([
+      this.jwtService.signAsync(payload),
+      this.jwtService.signAsync(payload, this.refreshTokenConfig),
+    ])
+    return {
+      accessToken,
+      refreshToken,
+    }
+  }
+
+  async validateUser({ email }: { email: string; password?: string }) {
+    const user = await this.userService.findOneByEmail(email)
+    if (!user) {
+      throw new BadRequestException('Invalid Credentials')
+    }
+
+    // TODO: Integrate with the user service to validate the password
+    // const isPasswordValid = await bcrypt.compare(password, user.password)
+    // if (!isPasswordValid) {
+    // return null
+    // }
+
+    return user
+  }
+
+  async validateJwtUser(userId: number) {
+    const user = await this.userService.findOneById(userId)
+    if (!user) throw new UnauthorizedException('User not found!')
+    const currentUser: { userId: number } = { userId }
+    return currentUser
   }
 }
