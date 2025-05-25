@@ -29,6 +29,16 @@ export class AssistanceService {
     return assistance
   }
 
+  async registerUserAssistance(data: CreateAssistanceDto) {
+    const { registrationId } = data
+    const assistance = this.assistanceRepository.create({
+      status: true,
+      registration: { id: registrationId },
+    })
+
+    return this.assistanceRepository.save(assistance)
+  }
+
   async update(id: number, updateAssistanceDto: UpdateAssistanceDto): Promise<Assistance> {
     const assistance = await this.findOne(id)
     this.assistanceRepository.merge(assistance, updateAssistanceDto)

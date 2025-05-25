@@ -19,16 +19,21 @@ export class AssistanceController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.assistanceService.findOne(+id)
+    return this.assistanceService.findOne(Number(id))
+  }
+
+  @Post('mark-attendance')
+  registerUserAssistance(@Body() createAssistanceDto: CreateAssistanceDto) {
+    return this.assistanceService.registerUserAssistance(createAssistanceDto)
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAssistanceDto: UpdateAssistanceDto) {
-    return this.assistanceService.update(+id, updateAssistanceDto)
+    return this.assistanceService.update(Number(id), updateAssistanceDto)
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.assistanceService.remove(+id)
+    return this.assistanceService.remove(Number(id))
   }
 }
