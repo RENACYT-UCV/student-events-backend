@@ -6,7 +6,7 @@ import { UserService } from '@modules/user'
 import { UpdateUserDto } from '@modules/user/dto/update-user.dto'
 import { MailService } from '@modules/mail/mail.service'
 import { RegisterDto } from './dto/register.dto'
-import { LoginDto } from './dto/login.dto'
+//import { LoginDto } from './dto/login.dto'
 
 import { refreshJwtConfig } from './config/refresh-jwt.config'
 
