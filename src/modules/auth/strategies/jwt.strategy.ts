@@ -12,6 +12,9 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     private jwtConfiguration: ConfigType<typeof jwtConfig>,
     private authService: AuthService,
   ) {
+    if (!jwtConfiguration.secret) {
+      throw new Error('JWT secret is not defined')
+    }
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: jwtConfiguration.secret,

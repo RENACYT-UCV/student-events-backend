@@ -36,4 +36,25 @@ export class EventController {
   createEventType(@Body() createEventTypeDto: CreateEventTypeDto) {
     return this.eventService.createEventType(createEventTypeDto)
   }
+
+  @Post(':eventId/register/:userId')
+  registerUserToEvent(
+    @Param('eventId', ParseIntPipe) eventId: number,
+    @Param('userId', ParseIntPipe) userId: number,
+  ) {
+    return this.eventService.registerUserToEvent(userId, eventId)
+  }
+
+  @Get('user/:userId/registrations')
+  getUserRegistrations(@Param('userId', ParseIntPipe) userId: number) {
+    return this.eventService.getUserRegistrations(userId)
+  }
+
+  @Get(':eventId/check-registration/:userId')
+  checkUserRegistration(
+    @Param('eventId', ParseIntPipe) eventId: number,
+    @Param('userId', ParseIntPipe) userId: number,
+  ) {
+    return this.eventService.checkUserRegistration(userId, eventId)
+  }
 }
