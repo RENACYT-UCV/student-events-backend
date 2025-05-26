@@ -1,7 +1,19 @@
-import { Body, Controller, Get, Post, Param, ParseIntPipe, Put, Delete } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Param,
+  ParseIntPipe,
+  Put,
+  Delete,
+  UseGuards,
+  Request,
+} from '@nestjs/common'
 import { UserService } from './user.service'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
+import { JwtAuthGuard } from '@modules/auth/guards/jwt-auth.guard'
 
 @Controller('/api/user')
 export class UserController {
@@ -12,14 +24,15 @@ export class UserController {
     return await this.userService.findAll()
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('profile')
+  getUserProfile(@Request() req) {
+    return this.userService.getUserProfile(req.user.id)
+  }
+
   @Get(':id')
   async getUserById(@Param('id') id: number) {
     return await this.userService.findOneById(id)
-  }
-
-  @Get('profile/:id')
-  async getUserProfile(@Param('id', ParseIntPipe) userId: number) {
-    return await this.userService.getUserProfile(userId)
   }
 
   @Get(':id/event-history')

@@ -70,6 +70,14 @@ export class AuthService {
     }
   }
 
+  async getProfile(userId: number) {
+    const user = await this.userService.getUserProfile(userId)
+    if (!user) {
+      throw new UnauthorizedException('User not found!')
+    }
+    return user
+  }
+
   async updateUser(id: number, data: UpdateUserDto) {
     return this.userService.updateUser(id, data)
   }
@@ -97,11 +105,16 @@ export class AuthService {
   }
 
   async generateTokens(userId: number) {
-    const payload: { userId: number } = { userId }
+    const payload: { userId: number; sub: number } = {
+      userId,
+      sub: userId,
+    }
+
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(payload),
       this.jwtService.signAsync(payload, this.refreshTokenConfig),
     ])
+
     return {
       accessToken,
       refreshToken,

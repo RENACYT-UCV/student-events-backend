@@ -12,6 +12,7 @@ import { GoogleStrategy } from './strategies/google.strategy'
 import { LocalStrategy } from './strategies/local.strategy'
 import { APP_GUARD } from '@nestjs/core'
 import { JwtAuthGuard } from './guards/jwt-auth.guard'
+import { JwtStrategy } from './strategies/jwt.strategy'
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard'
     MailService,
     GoogleStrategy,
     LocalStrategy,
+    JwtStrategy,
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
