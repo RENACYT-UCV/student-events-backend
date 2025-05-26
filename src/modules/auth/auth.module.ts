@@ -1,14 +1,38 @@
 import { Module } from '@nestjs/common'
-import { UserModule } from '@modules/user/user.module'
-import { AuthService } from './auth.service'
-import { AuthController } from './auth.controller'
-import { MailService } from '../mail/mail.service'
-import { GoogleStrategy } from './strategies/google.strategy'
+import { ConfigModule } from '@nestjs/config'
+import { JwtModule } from '@nestjs/jwt'
 import { PassportModule } from '@nestjs/passport'
+import { UserModule } from '@modules/user/user.module'
+import { MailService } from '../mail/mail.service'
+import { AuthController } from './auth.controller'
+import { AuthService } from './auth.service'
+import { jwtConfig } from './config/jwt.config'
+import { refreshJwtConfig } from './config/refresh-jwt.config'
+import { GoogleStrategy } from './strategies/google.strategy'
+import { LocalStrategy } from './strategies/local.strategy'
+import { APP_GUARD } from '@nestjs/core'
+import { JwtAuthGuard } from './guards/jwt-auth.guard'
+import { JwtStrategy } from './strategies/jwt.strategy'
 
 @Module({
-  imports: [UserModule, PassportModule],
-  providers: [AuthService, MailService, GoogleStrategy],
+  imports: [
+    JwtModule.registerAsync(jwtConfig.asProvider()),
+    ConfigModule.forFeature(jwtConfig),
+    ConfigModule.forFeature(refreshJwtConfig),
+    UserModule,
+    PassportModule,
+  ],
+  providers: [
+    AuthService,
+    MailService,
+    GoogleStrategy,
+    LocalStrategy,
+    JwtStrategy,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
   controllers: [AuthController],
 })
 export class AuthModule {}

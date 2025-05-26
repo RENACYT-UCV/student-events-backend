@@ -1,7 +1,8 @@
 import { Transform } from 'class-transformer'
-import { IsNotEmpty, IsString, MinLength } from 'class-validator'
+import { IsNotEmpty, IsString, MinLength, IsOptional } from 'class-validator'
 
 export class RegisterDto {
+  @IsOptional()
   @IsNotEmpty()
   @IsString()
   name: string

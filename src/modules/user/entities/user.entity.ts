@@ -19,7 +19,7 @@ export class User extends AuditBaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number
 
-  @Column({ length: 60 })
+  @Column({ length: 60, nullable: true })
   username: string
 
   @Column({ length: 100, unique: true })
@@ -47,7 +47,7 @@ export class User extends AuditBaseEntity {
   @Column({ nullable: true })
   phoneNumber: number
 
-  @Column()
+  @Column({ nullable: true })
   studentCode: number
 
   @Column({ length: 100, nullable: true })
@@ -56,7 +56,7 @@ export class User extends AuditBaseEntity {
   @Column({ type: 'timestamp', nullable: true })
   resetTokenExpires: Date
 
-  @ManyToOne(() => School, school => school.id)
+  @ManyToOne(() => School, school => school.id, { nullable: true })
   @JoinColumn({ name: 'school_id' })
   school: Relation<School>
 

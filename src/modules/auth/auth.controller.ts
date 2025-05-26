@@ -1,9 +1,10 @@
-import { Body, Controller, Post } from '@nestjs/common'
+import { Body, Controller, Post, Get, Req, UseGuards, Res, Request } from '@nestjs/common'
+import { AuthGuard } from '@nestjs/passport'
 import { AuthService } from './auth.service'
 import { RegisterDto } from './dto/register.dto'
-import { LoginDto } from './dto/login.dto'
-import { Get, Req, Res, UseGuards } from '@nestjs/common'
-import { AuthGuard } from '@nestjs/passport'
+// import { LoginDto } from './dto/login.dto
+import { LocalAuthGuard } from './guards/local-auth.guard'
+import { Public } from './decorators/public.decorator'
 
 @Controller('/api/auth')
 export class AuthController {
@@ -14,9 +15,11 @@ export class AuthController {
     return await this.authService.register(data)
   }
 
+  @Public()
+  @UseGuards(LocalAuthGuard)
   @Post('/login')
-  async login(@Body() data: LoginDto) {
-    return await this.authService.login(data)
+  async login(@Request() req) {
+    return this.authService.login(req.user.id)
   }
 
   @Post('/forgot-password')
