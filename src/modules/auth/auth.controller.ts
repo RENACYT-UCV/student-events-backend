@@ -23,6 +23,7 @@ export class AuthController {
     return this.authService.login(req.user.id)
   }
 
+  @Public()
   @Post('/forgot-password')
   async forgotPassword(@Body('email') email: string) {
     return this.authService.requestPasswordReset(email)
