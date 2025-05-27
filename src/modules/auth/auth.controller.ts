@@ -10,6 +10,7 @@ import { Public } from './decorators/public.decorator'
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Public()
   @Post('/register')
   async register(@Body() data: RegisterDto) {
     return await this.authService.register(data)
