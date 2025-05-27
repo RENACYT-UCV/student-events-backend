@@ -41,4 +41,8 @@ export class EventService {
   createRegistration(createRegistrationDto: CreateRegistrationDto) {
     return this.registrationRepository.createRegistration(createRegistrationDto)
   }
+
+  findEventsByUserId(userId: number) {
+    return this.registrationRepository.findEventsByUserId(userId)
+  }
 }

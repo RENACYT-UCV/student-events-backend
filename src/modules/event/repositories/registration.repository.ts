@@ -51,4 +51,13 @@ export class RegistrationRepository {
       relations: ['event', 'user'],
     })
   }
+
+  async findEventsByUserId(userId: number) {
+    const registrations = await this.registrationRepository.find({
+      where: { user: { id: userId } },
+      relations: ['event', 'event.eventDetails', 'event.eventType'],
+    })
+
+    return registrations.map(registration => registration.event)
+  }
 }

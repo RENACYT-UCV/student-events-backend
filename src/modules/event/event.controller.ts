@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common'
+import { Controller, Get, Post, Body, Param, ParseIntPipe } from '@nestjs/common'
 import { EventService } from './event.service'
 import { CreateEventDto } from './dto/create-event.dto'
 import { CreateEventTypeDto } from './dto/create-event-type.dto'
@@ -26,6 +26,11 @@ export class EventController {
   @Get('/types/:id')
   findEventTypeById(@Param('id', ParseIntPipe) id: number) {
     return this.eventService.findEventTypeById(id)
+  }
+
+  @Get('/user/:userId')
+  findEventsByUserId(@Param('userId', ParseIntPipe) userId: number) {
+    return this.eventService.findEventsByUserId(userId)
   }
 
   @Post()
