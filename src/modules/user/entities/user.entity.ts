@@ -51,6 +51,9 @@ export class User extends AuditBaseEntity {
   studentCode: number
 
   @Column({ length: 100, nullable: true })
+  avatarUrl: string
+
+  @Column({ length: 100, nullable: true })
   resetToken: string
 
   @Column({ type: 'timestamp', nullable: true })
