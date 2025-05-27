@@ -33,9 +33,7 @@ export class AuthController {
   @Public()
   @Post('/verify-reset-code')
   async verifyResetCode(@Body('code') code: string, @Body('email') email: string) {
-    console.log('Código recibido para verificación:', code)
     const result = await this.authService.verifyResetCode(email, code)
-    console.log('Resultado de la verificación:', result)
     return result
   }
 

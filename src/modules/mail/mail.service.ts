@@ -14,7 +14,6 @@ export class MailService {
 
   async sendPasswordReset(email: string, username: string, code: string) {
     const html = passwordResetTemplate({ username, email, code })
-    console.log('Attempting to send email to:', email)
     await this.transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: email,
