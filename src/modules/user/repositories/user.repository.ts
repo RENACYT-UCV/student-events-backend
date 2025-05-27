@@ -24,21 +24,16 @@ export class UserRepository {
     return this.userRepository.findOne({ where: { email } })
   }
 
-  findOne(options: any) {
-    return this.userRepository.findOne(options)
-  }
-
-  /**
-   * This method is only used for testing pipes.
-   * In the final implementation, user registration will be handled
-   * through authentication.
-   * This method will be removed.
-   */
-
   async findUserById(id: number) {
     return this.userRepository.findOne({
       where: { id },
-      select: ['id', 'name', 'lastName', 'email'],
+      select: {
+        id: true,
+        name: true,
+        lastName: true,
+        email: true,
+        phoneNumber: true,
+      },
     })
   }
 
