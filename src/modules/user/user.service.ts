@@ -48,4 +48,8 @@ export class UserService {
   deleteUser(id: number) {
     return this.userRepository.deleteUser(id)
   }
+
+  async findOneByResetToken(resetToken: string) {
+    return this.userRepository.findOne({ where: { resetToken } })
+  }
 }

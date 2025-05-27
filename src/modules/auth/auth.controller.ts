@@ -29,6 +29,12 @@ export class AuthController {
     return this.authService.requestPasswordReset(email)
   }
 
+  @Public()
+  @Post('/verify-reset-code')
+  async verifyResetCode(@Body('code') code: string) {
+    return this.authService.verifyResetCode(code)
+  }
+
   @Get('/google')
   @UseGuards(AuthGuard('google'))
   async googleAuth() {

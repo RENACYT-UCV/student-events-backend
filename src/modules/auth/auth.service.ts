@@ -142,4 +142,21 @@ export class AuthService {
     const currentUser: { userId: number } = { userId }
     return currentUser
   }
+
+  async verifyResetCode(code: string) {
+    const user = await this.userService.findOneByResetToken(code)
+    if (!user || user.resetTokenExpires < new Date()) {
+      throw new BadRequestException('Código inválido o expirado')
+    }
+
+    // Clear the reset token and expiration
+    await this.userService.updateUser(user.id, {
+      resetToken: undefined,
+      resetTokenExpires: undefined,
+    })
+
+    return {
+      message: 'Código verificado correctamente',
+    }
+  }
 }
