@@ -5,6 +5,7 @@ import { RegisterDto } from './dto/register.dto'
 // import { LoginDto } from './dto/login.dto
 import { LocalAuthGuard } from './guards/local-auth.guard'
 import { Public } from './decorators/public.decorator'
+import { UpdatePasswordDto } from './dto/update-password.dto'
 
 @Controller('/api/auth')
 export class AuthController {
@@ -24,18 +25,24 @@ export class AuthController {
   }
 
   @Public()
-  @Post('/forgot-password')
+  @Post('/forgot-password-request')
   async forgotPassword(@Body('email') email: string) {
     return this.authService.requestPasswordReset(email)
   }
 
   @Public()
   @Post('/verify-reset-code')
-  async verifyResetCode(@Body('code') code: string) {
+  async verifyResetCode(@Body('code') code: string, @Body('email') email: string) {
     console.log('Código recibido para verificación:', code)
-    const result = await this.authService.verifyResetCode(code)
+    const result = await this.authService.verifyResetCode(email, code)
     console.log('Resultado de la verificación:', result)
     return result
+  }
+
+  @Public()
+  @Post('/reset-password')
+  async resetPassword(@Body() data: UpdatePasswordDto) {
+    return await this.authService.resetPassword(data)
   }
 
   @Get('/google')

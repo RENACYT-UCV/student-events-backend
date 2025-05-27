@@ -9,6 +9,7 @@ import { RegisterDto } from './dto/register.dto'
 //import { LoginDto } from './dto/login.dto'
 
 import { refreshJwtConfig } from './config/refresh-jwt.config'
+import { UpdatePasswordDto } from './dto/update-password.dto'
 
 @Injectable()
 export class AuthService {
@@ -121,17 +122,19 @@ export class AuthService {
     }
   }
 
-  async validateUser({ email }: { email: string; password?: string }) {
+  async validateUser({ email, password }: { email: string; password: string }) {
     const user = await this.userService.findOneByEmail(email)
     if (!user) {
       throw new BadRequestException('Invalid Credentials')
     }
 
-    // TODO: Integrate with the user service to validate the password
-    // const isPasswordValid = await bcrypt.compare(password, user.password)
-    // if (!isPasswordValid) {
-    // return null
-    // }
+    if (user.password) {
+      // If password is provided, validate it
+      const isPasswordValid = await bcrypt.compare(password, user.password)
+      if (!isPasswordValid) {
+        throw new BadRequestException('Invalid Credentials')
+      }
+    }
 
     return user
   }
@@ -143,9 +146,9 @@ export class AuthService {
     return currentUser
   }
 
-  async verifyResetCode(code: string) {
-    const user = await this.userService.findOneByResetToken(code)
-    if (!user || user.resetTokenExpires < new Date()) {
+  async verifyResetCode(email: string, code: string) {
+    const user = await this.userService.findOneByEmail(email)
+    if (user?.resetToken !== code || !user || user.resetTokenExpires < new Date()) {
       throw new BadRequestException('Código inválido o expirado')
     }
 
@@ -158,6 +161,31 @@ export class AuthService {
     return {
       message: 'Código verificado correctamente',
       token: user.resetToken,
+    }
+  }
+
+  async resetPassword(data: UpdatePasswordDto) {
+    const { email, code, password } = data
+
+    const user = await this.userService.findOneByEmail(email)
+    if (!user) {
+      throw new BadRequestException('No existe una cuenta con ese correo')
+    }
+
+    if (user.resetToken !== code || user.resetTokenExpires < new Date()) {
+      throw new BadRequestException('Código inválido o expirado')
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 6)
+
+    await this.userService.updateUser(user.id, {
+      password: hashedPassword,
+      resetToken: undefined,
+      resetTokenExpires: undefined,
+    })
+
+    return {
+      message: 'Contraseña actualizada correctamente',
     }
   }
 }

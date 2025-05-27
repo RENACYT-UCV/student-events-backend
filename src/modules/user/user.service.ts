@@ -49,7 +49,7 @@ export class UserService {
     return this.userRepository.deleteUser(id)
   }
 
-  async findOneByResetToken(resetToken: string) {
-    return this.userRepository.findOne({ where: { resetToken } })
-  }
+  // findOneByResetToken(resetToken: string) {
+  //   return this.userRepository.findOneByResetToken(resetToken)
+  // }
 }
