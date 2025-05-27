@@ -11,6 +11,7 @@ import { AnnouncementModule } from '@modules/announcement/announcement.module'
 import { AssistanceModule } from '@modules/attendance/assistance.module'
 import { SchoolModule } from '@modules/school/school.module'
 import { CertificateModule } from '@modules/certificate/certificate.module'
+import { RegistrationModule } from '../registration/registration.module'
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { CertificateModule } from '@modules/certificate/certificate.module'
     SchoolModule,
     SurveyModule,
     CertificateModule,
+    RegistrationModule,
   ],
 })
 export class AppModule {}
