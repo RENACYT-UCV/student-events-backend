@@ -5,7 +5,6 @@ export class CreateRegistrationDto {
   @IsInt()
   eventId: number
 
-  @IsNotEmpty()
   @IsInt()
   userId: number
 }

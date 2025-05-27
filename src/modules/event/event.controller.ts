@@ -38,8 +38,11 @@ export class EventController {
     return this.eventService.createEventType(createEventTypeDto)
   }
 
-  @Post('/register')
-  createRegistration(@Body() createRegistrationDto: CreateRegistrationDto) {
-    return this.eventService.createRegistration(createRegistrationDto)
+  @Post('/register/:userId')
+  createRegistration(
+    @Param('userId', ParseIntPipe) userId: number,
+    @Body() createRegistrationDto: CreateRegistrationDto,
+  ) {
+    return this.eventService.createRegistration({ ...createRegistrationDto, userId })
   }
 }
