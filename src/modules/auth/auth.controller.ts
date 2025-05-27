@@ -32,7 +32,10 @@ export class AuthController {
   @Public()
   @Post('/verify-reset-code')
   async verifyResetCode(@Body('code') code: string) {
-    return this.authService.verifyResetCode(code)
+    console.log('Código recibido para verificación:', code)
+    const result = await this.authService.verifyResetCode(code)
+    console.log('Resultado de la verificación:', result)
+    return result
   }
 
   @Get('/google')

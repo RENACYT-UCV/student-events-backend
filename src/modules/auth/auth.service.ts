@@ -157,6 +157,7 @@ export class AuthService {
 
     return {
       message: 'Código verificado correctamente',
+      token: user.resetToken,
     }
   }
 }
