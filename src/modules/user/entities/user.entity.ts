@@ -25,7 +25,7 @@ export class User extends AuditBaseEntity {
   @Column({ length: 100, unique: true })
   email: string
 
-  @Column({ length: 100 })
+  @Column({ length: 10, nullable: true })
   password: string
 
   @Column({ default: true })
