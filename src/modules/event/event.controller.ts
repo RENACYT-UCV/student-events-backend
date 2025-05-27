@@ -2,6 +2,7 @@ import { Body, Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common
 import { EventService } from './event.service'
 import { CreateEventDto } from './dto/create-event.dto'
 import { CreateEventTypeDto } from './dto/create-event-type.dto'
+import { CreateRegistrationDto } from './dto/create-registration.dto'
 
 @Controller('/api/events')
 export class EventController {
@@ -35,5 +36,10 @@ export class EventController {
   @Post('/types')
   createEventType(@Body() createEventTypeDto: CreateEventTypeDto) {
     return this.eventService.createEventType(createEventTypeDto)
+  }
+
+  @Post('/register')
+  createRegistration(@Body() createRegistrationDto: CreateRegistrationDto) {
+    return this.eventService.createRegistration(createRegistrationDto)
   }
 }
